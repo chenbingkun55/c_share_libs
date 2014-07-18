@@ -8,7 +8,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.IO;
 
-namespace ConsoleApplication1
+namespace ConsoleApplication2
 {
     class configINI
     {
@@ -37,22 +37,49 @@ namespace ConsoleApplication1
          * filePath：INI文件的完整路径和名称。
          */
 
-        public configINI( string INIPath ) {
+
+        /// <summary>
+        ///  构造方法
+        /// </summary>
+        /// <param name="INIPath">文件路径</param>
+        public configINI(string INIPath)
+        {
             iniPath = INIPath;
         }
 
-
-        public void writeINI(string section, string key, string val){
+        /// <summary>
+        ///  写入ini文件,不存在时自动创建
+        /// </summary>
+        /// <param name="section">项目名称 ( 例如[user])</param>
+        /// <param name="key">键</param>
+        /// <param name="val">值</param>
+        public void writeINI(string section, string key, string val)
+        {
             WritePrivateProfileString(section, key, val, iniPath);
         }
 
-
+        /// <summary>
+        ///  读取 ini文件, 
+        /// </summary>
+        /// <param name="section"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public string readINI(string section, string key)
         {
             StringBuilder temp = new StringBuilder(500);
             int val = GetPrivateProfileString(section, key, "", temp, 500, this.iniPath);
 
             return temp.ToString();
+        }
+
+
+        /// <summary>
+        ///  判断ini文件是否存在.
+        /// </summary>
+        /// <returns></returns>
+        public bool iniExist()
+        {
+            return File.Exists(this.iniPath);
         }
     }
 }
